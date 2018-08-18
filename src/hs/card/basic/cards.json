@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Frostwolf Grunt",
+    "index": 2,
+    "type": "minion",
+    "attack": 2,
+    "health": 2,
+    "cost": 2,
+    "keywords": ["Taunt"],
+    "card_class": "Neutral"
+  }
+]
