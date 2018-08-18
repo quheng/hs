@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebSocket demo</title>
+        <style type="text/css">
+            body {
+                font-family: "Courier New", sans-serif;
+                text-align: center;
+            }
+            .buttons {
+                font-size: 4em;
+                display: flex;
+                justify-content: center;
+            }
+            .button, .value {
+                line-height: 1;
+                padding: 2rem;
+                margin: 2rem;
+                border: medium solid;
+                min-height: 1em;
+                min-width: 1em;
+            }
+            .button {
+                cursor: pointer;
+                user-select: none;
+            }
+            .invalid {
+                color: red;
+            }
+            .valid {
+                color: green;
+            }
+            .msg {
+                min-width: 2em;
+            }
+            .state {
+                font-size: 2em;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="buttons">
+            <div class="invalid button">-</div>
+            <div class="valid button">+</div>
+        </div>
+        <div>
+            <ul>
+
+            </ul>
+        </div>
+        <script>
+            var msg_list = []
+            var msg = document.querySelector('ul'),
+                valid = document.querySelector('.valid'),
+                invalid = document.querySelector('.invalid'),
+                websocket = new WebSocket("ws://127.0.0.1:6789/testpath");
+            valid.onclick = function (event) {
+                websocket.send(JSON.stringify({event: 'choose_deck', deck_index:1}));
+            }
+            invalid.onclick = function (event) {
+                websocket.send(JSON.stringify({invalid: 'invalid'}));
+            }
+            websocket.onmessage = function (event) {
+                msg_list.push(event.data)
+                var newEl = document.createElement('ul');
+                newEl.innerHTML = msg_list.map((m) => `<li>${m}</li>`).join('\n');
+
+                msg.parentNode.replaceChild(newEl, msg);
+                msg = document.querySelector('ul');
+            };
+        </script>
+    </body>
+</html>
